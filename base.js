@@ -32,15 +32,13 @@ module.exports = opt => {
 		rules: {
 			"vue/html-indent": ["error", tab],
 			"vue/html-quotes": ["error", quote],
+			"vue/script-indent": ["error", tab],
 			"vue/component-name-in-template-casing": ["error", "kebab-case", { ignores: ["/^(el|van)-/"], registeredComponentsOnly: true }],
 		},
 	}, {
 		files: ["*.ts", "*.tsx"],
 		plugins: ["@typescript-eslint"],
-		extends: [
-			"plugin:@typescript-eslint/recommended",
-			"plugin:@typescript-eslint/eslint-recommended",
-		],
+		extends: ["plugin:@typescript-eslint/recommended"],
 		rules: {
 			indent: "off",
 			quotes: "off",
@@ -65,7 +63,7 @@ module.exports = opt => {
 		parserOptions: {
 			parser: "babel-eslint",
 			sourceType: opt.es5 ? "script" : "module",
-			ecmaVersion: opt.es5 ? 5 : 10,
+			ecmaVersion: opt.es5 ? 5 : 11,
 			ecmaFeatures: {
 				experimentalObjectRestSpread: true,
 				impliedStrict: true,
@@ -85,11 +83,10 @@ module.exports = opt => {
 			es6: !opt.es5,
 		},
 	};
-	if (opt.es5) {
-		ext.push("ali/es5"); return config;
-	}
-	plugins.push("import", "flowtype");
+	if (opt.es5) { ext.push("ali/es5"); return config; }
+	plugins.push("date", "import", "flowtype");
 	ext.push("plugin:flowtype/recommended");
+	ext.push("plugin:date/recommended");
 	opt.react && plugins.push("react", "react-hooks");
 	opt.react && ext.push("plugin:react/recommended");
 	Object.assign(rules, require("./mbp"), {
@@ -106,7 +103,6 @@ module.exports = opt => {
 		"react/jsx-tag-spacing": ["error", { beforeSelfClosing: "always" }],
 		"react/jsx-curly-spacing": ["error", "never"],
 		"react/jsx-equals-spacing": ["error", "never"],
-		"react/react-in-jsx-scope": "error",
 		"react/jsx-boolean-value": "error",
 		"react/self-closing-comp": "error",
 		"react/no-deprecated": "off",

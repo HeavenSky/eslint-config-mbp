@@ -76,7 +76,7 @@ module.exports = {
 	"padded-blocks": ["error", { blocks: "never", switches: "never", classes: "never" }],
 	"prefer-arrow-callback": "error",
 	"prefer-const": "error",
-	"prefer-destructuring": "off",
+	"prefer-destructuring": "error",
 	"prefer-named-capture-group": "off",
 	"prefer-numeric-literals": "error",
 	"prefer-object-spread": "error",

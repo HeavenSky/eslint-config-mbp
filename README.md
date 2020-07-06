@@ -28,11 +28,17 @@ module.exports = base({
 ```
 
 ## eslint配置
+`$ npm i eslint-config-mbp`
 ```json
-// FOR es5
-{ "extends": "eslint-config-mbp/es5" }
 // FOR es6+react+vue+ts
-{ "extends": "eslint-config-mbp/es6" }
+{ "extends": "mbp/es6" }  // 等同 "mbp"
+// FOR es5
+{ "extends": "mbp/es5" }
+// BELOW is 2 space and single quote
+// FOR es6+react+vue+ts
+{ "extends": "mbp/space/es6" }  // 等同 "mbp/space"
+// FOR es5
+{ "extends": "mbp/space/es5" }
 ```
 
 ## 查看eslint最终配置
@@ -42,3 +48,6 @@ $ npx eslint --print-config *.ts > config.json
 $ npx eslint --print-config *.vue > config.json
 ```
 `config.json`即是该文件的对应配置
+"off" -- 0 -- 不启用这个规则
+"warn" -- 1 -- 出现问题会有警告
+"error" -- 2 -- 出现问题会报错
