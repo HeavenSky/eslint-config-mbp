@@ -44,6 +44,8 @@ module.exports = opt => {
 			quotes: "off",
 			"no-extra-parens": "off",
 			"@typescript-eslint/ban-types": "off",
+			"@typescript-eslint/ban-ts-comment": "off",
+			"@typescript-eslint/no-explicit-any": "off",
 			"@typescript-eslint/quotes": rules.quotes,
 			"@typescript-eslint/indent": ["error", tab],
 			"@typescript-eslint/no-extra-parens": "error",
@@ -63,7 +65,7 @@ module.exports = opt => {
 		parserOptions: {
 			parser: "babel-eslint",
 			sourceType: opt.es5 ? "script" : "module",
-			ecmaVersion: opt.es5 ? 5 : 11,
+			ecmaVersion: opt.es5 ? 5 : 10,
 			ecmaFeatures: {
 				experimentalObjectRestSpread: true,
 				impliedStrict: true,
@@ -84,12 +86,12 @@ module.exports = opt => {
 		},
 	};
 	if (opt.es5) { ext.push("ali/es5"); return config; }
-	plugins.push("date", "import", "flowtype");
-	ext.push("plugin:flowtype/recommended");
-	ext.push("plugin:date/recommended");
 	opt.react && plugins.push("react", "react-hooks");
 	opt.react && ext.push("plugin:react/recommended");
+	plugins.push("date", "import", "flowtype");
+	ext.push("plugin:flowtype/recommended");
 	Object.assign(rules, require("./mbp"), {
+		"date/no-new-date-with-args": "error",
 		"import/newline-after-import": "off",
 		"import/no-named-default": "error",
 		"import/no-duplicates": "error",

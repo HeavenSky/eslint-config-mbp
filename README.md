@@ -48,6 +48,11 @@ $ npx eslint --print-config *.ts > config.json
 $ npx eslint --print-config *.vue > config.json
 ```
 `config.json`即是该文件的对应配置
-"off" -- 0 -- 不启用这个规则
-"warn" -- 1 -- 出现问题会有警告
-"error" -- 2 -- 出现问题会报错
+
+## 其他说明
+- 子依赖包内包含的命令不会自动安装,移除eslint依赖,常见使用组合
+	- eslint + eslint-config-mbp
+- eslint规则属性值简介
+	- "off" -- 0 -- 不启用这个规则
+	- "warn" -- 1 -- 出现问题会有警告
+	- "error" -- 2 -- 出现问题会报错
