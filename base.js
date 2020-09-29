@@ -1,24 +1,27 @@
 /**
  * eslint配置生成函数
  * @author HeavenSky
- * @date 2020-06-09
+ * @date 2020-05-20
  * @param {"tab"|2|4} opt.tab 缩进类型
- * @param {"single"|"double"} opt.quote 引号类型
+ * @param {"double"|"single"} opt.quote 引号类型
  * @param {boolean} opt.react 是否启用react支持
  * @param {boolean} opt.babel 是否启用babel支持
  * @param {boolean} opt.es5 是否启用es5支持
  * @returns {object} eslint配置
  * SEARCH_tab|babel|quote|indent
  * ES5_es6=false_sourceType=script
+ * https://github.com/typescript-eslint/typescript-eslint/tree/master/packages/eslint-plugin/src/rules
+ * https://github.com/vuejs/eslint-plugin-vue/tree/master/lib/rules
+ * https://github.com/eslint/eslint/tree/master/lib/rules
  */
 module.exports = opt => {
-	opt = { ...opt }; let { quote } = opt;
-	const tab = opt.tab > 1 ? 2 : "tab";
-	quote !== "single" && (quote = "double");
+	const { quote: qt, react, babel, es5 } = opt || {};
+	const tab = opt && opt.tab > 1 ? opt.tab : "tab";
+	const quote = qt !== "single" ? "double" : "single";
+	const indent = ["error", tab, { SwitchCase: 1 }];
+	const quotes = ["error", quote, { avoidEscape: true }];
 	const rules = {
-		semi: ["error", "always"],
-		camelcase: ["error", { properties: "never" }],
-		quotes: ["error", quote, { avoidEscape: true, allowTemplateLiterals: false }],
+		quotes, semi: ["error", "always"], camelcase: ["error", { properties: "never" }],
 		"no-unused-expressions": ["error", { allowTernary: true, allowShortCircuit: true, allowTaggedTemplates: true }],
 		"object-curly-spacing": ["error", "always", { arraysInObjects: true, objectsInObjects: true }],
 		"valid-typeof": ["error", { requireStringLiterals: true }],
@@ -46,26 +49,25 @@ module.exports = opt => {
 			"@typescript-eslint/ban-types": "off",
 			"@typescript-eslint/ban-ts-comment": "off",
 			"@typescript-eslint/no-explicit-any": "off",
-			"@typescript-eslint/quotes": rules.quotes,
-			"@typescript-eslint/indent": ["error", tab],
 			"@typescript-eslint/no-extra-parens": "error",
+			"@typescript-eslint/indent": indent,
+			"@typescript-eslint/quotes": quotes,
 		},
 	}];
-	const plugins = []; const ext = ["eslint:recommended"];
-	opt.babel && Object.keys(rules).forEach(k => {
+	const plugins = []; const exts = ["eslint:recommended"];
+	babel && Object.keys(rules).forEach(k => {
 		rules[`babel/${k}`] = rules[k]; rules[k] = "off";
-	}); opt.babel && plugins.push("babel");
+	}); babel && plugins.push("babel");
 	Object.assign(rules, {
-		indent: ["error", tab],
-		"no-tabs": tab > 1 ? "error" : "off",
+		indent, "no-tabs": tab > 1 ? "error" : "off",
 		"jsx-quotes": ["error", `prefer-${quote}`],
 	});
 	const config = {
-		rules, overrides, plugins, extends: ext,
+		rules, overrides, plugins, extends: exts,
 		parserOptions: {
 			parser: "babel-eslint",
-			sourceType: opt.es5 ? "script" : "module",
-			ecmaVersion: opt.es5 ? 5 : 10,
+			sourceType: es5 ? "script" : "module",
+			ecmaVersion: es5 ? 5 : 10,
 			ecmaFeatures: {
 				experimentalObjectRestSpread: true,
 				impliedStrict: true,
@@ -82,14 +84,14 @@ module.exports = opt => {
 			node: true,
 			jest: true,
 			amd: true,
-			es6: !opt.es5,
+			es6: !es5,
 		},
 	};
-	if (opt.es5) { ext.push("ali/es5"); return config; }
-	opt.react && plugins.push("react", "react-hooks");
-	opt.react && ext.push("plugin:react/recommended");
+	if (es5) { exts.push("ali/es5"); return config; }
+	react && exts.push("plugin:react/recommended");
+	react && plugins.push("react", "react-hooks");
 	plugins.push("date", "import", "flowtype");
-	ext.push("plugin:flowtype/recommended");
+	exts.push("plugin:flowtype/recommended");
 	Object.assign(rules, require("./mbp"), {
 		"date/no-new-date-with-args": "error",
 		"import/newline-after-import": "off",
@@ -98,13 +100,13 @@ module.exports = opt => {
 		"import/default": "error",
 		"import/export": "error",
 		"import/first": "error",
-	}, opt.react && {
+	}, react && {
 		"react/jsx-indent": ["error", tab],
 		"react/jsx-indent-props": ["error", tab],
 		"react/jsx-filename-extension": ["error", { extensions: [".ts", ".tsx", ".js", ".jsx", ".mjs"] }],
 		"react/jsx-tag-spacing": ["error", { beforeSelfClosing: "always" }],
-		"react/jsx-curly-spacing": ["error", "never"],
 		"react/jsx-equals-spacing": ["error", "never"],
+		"react/jsx-curly-spacing": ["error", "never"],
 		"react/jsx-boolean-value": "error",
 		"react/self-closing-comp": "error",
 		"react/no-deprecated": "off",

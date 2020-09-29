@@ -1,1 +1,2 @@
-module.exports = require("./es6");
+const base = require("./base");
+module.exports = base({ babel: true, react: true });

@@ -11,7 +11,7 @@ eslint配置的最佳实践
  * @author HeavenSky
  * @date 2020-06-09
  * @param {"tab"|2|4} opt.tab 缩进类型
- * @param {"single"|"double"} opt.quote 引号类型
+ * @param {"double"|"single"} opt.quote 引号类型
  * @param {boolean} opt.react 是否启用react支持
  * @param {boolean} opt.babel 是否启用babel支持
  * @param {boolean} opt.es5 是否启用es5支持
@@ -31,12 +31,12 @@ module.exports = base({
 `$ npm i eslint-config-mbp`
 ```json
 // FOR es6+react+vue+ts
-{ "extends": "mbp/es6" }  // 等同 "mbp"
+{ "extends": "mbp" }
 // FOR es5
 { "extends": "mbp/es5" }
-// BELOW is 2 space and single quote
+// ***BELOW*** 2 space and single quote
 // FOR es6+react+vue+ts
-{ "extends": "mbp/space/es6" }  // 等同 "mbp/space"
+{ "extends": "mbp/space" }
 // FOR es5
 { "extends": "mbp/space/es5" }
 ```
